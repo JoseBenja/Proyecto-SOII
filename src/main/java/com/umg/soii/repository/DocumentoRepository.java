@@ -2,12 +2,8 @@ package com.umg.soii.repository;
 
 import com.umg.soii.dao.DocumentoDao;
 import com.umg.soii.models.Documento;
-import com.umg.soii.models.Propietario;
-import com.umg.soii.models.Usuario;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,10 +22,14 @@ public class DocumentoRepository implements DocumentoDao {
     }
 
     @Override
-    public List<Documento> descargarDocumento(Documento documento) {
-        String query = "FROM Documento WHERE id_doc = '" + documento.getIdDoc() + "'";
+    public String descargarDocumento(Documento documento) {
+        String query = "FROM Documento WHERE propietario= :prop";
+        List<Documento> lista = entityManager.createQuery(query)
+                .setParameter("prop", documento.getPropietario())
+                .getResultList();
 
-        return entityManager.createQuery(query).getResultList();
+
+        return lista.get(0).getDocGuardado();
     }
 
 }

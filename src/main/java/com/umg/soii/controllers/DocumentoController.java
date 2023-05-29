@@ -9,6 +9,7 @@ import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -76,7 +77,9 @@ public class DocumentoController {
     }
 
     @RequestMapping(value = "api/descargarDocumento", method = RequestMethod.POST)
-    public List<Documento> descargarDocumento(@RequestBody Documento documento) {
-        return documentoDao.descargarDocumento(documento);
+    public ResponseEntity<String> descargarDocumento(@RequestBody Documento documento) {
+        String resultado = documentoDao.descargarDocumento(documento);
+
+        return ResponseEntity.ok(resultado);
     }
 }

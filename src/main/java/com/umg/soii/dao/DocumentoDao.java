@@ -8,5 +8,5 @@ public interface DocumentoDao {
 
     void guardarDocumento(Documento documento);
 
-    List<Documento> descargarDocumento(Documento documento);
+    String descargarDocumento(Documento documento);
 }

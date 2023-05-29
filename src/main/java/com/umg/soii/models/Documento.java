@@ -10,7 +10,7 @@ import java.sql.Date;
 @Getter
 @Setter
 @Transactional
-@Entity
+@Entity(name = "Documento")
 @Table(name = "documentos")
 public class Documento {
 
