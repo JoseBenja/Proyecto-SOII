@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.Doc;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class DocumentoController {
         StringBuilder builder = new StringBuilder();
         builder.append(System.getProperty("user.home"));
         builder.append(File.separator);
-        builder.append("upload");
+        builder.append("file-system-soii");
 
 
         File folder = new File(builder.toString());
@@ -58,7 +59,7 @@ public class DocumentoController {
             folder.mkdirs();
         }
         builder.append(File.separator);
-        builder.append(idenDoc + " - " + propietario);
+        builder.append(idenDoc + "-" + propietario);
 
         File folder2 = new File(builder.toString());
         if (!folder2.exists()) {
@@ -77,9 +78,10 @@ public class DocumentoController {
     }
 
     @RequestMapping(value = "api/descargarDocumento", method = RequestMethod.POST)
-    public ResponseEntity<String> descargarDocumento(@RequestBody Documento documento) {
-        String resultado = documentoDao.descargarDocumento(documento);
-
-        return ResponseEntity.ok(resultado);
+    @ResponseBody
+    public ResponseEntity<List<Documento>> descargarDocumento(@RequestBody Documento documento) {
+        List<Documento> documentos = documentoDao.descargarDocumento(documento);
+        return ResponseEntity.ok(documentos);
     }
+
 }

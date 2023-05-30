@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    downloadFile();
+    listaPropietario();
 });
 
 async function descargarDocumento() {
@@ -9,7 +9,8 @@ async function descargarDocumento() {
     datosDescarga.propietario = document.getElementById("SelectTableDescarga").value;
     datosDescarga.fechaDoc = document.getElementById("txtFechaDesde").value;
 
-    const request3 = await fetch('api/descargarDocumento', {
+    try {
+        const request3 = await fetch('api/descargarDocumento', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -17,17 +18,15 @@ async function descargarDocumento() {
         },
         body: JSON.stringify(datosDescarga)
     });
-
-    const resultado2 = await request3.text();
-
-
+        const resultado2 = await request3.json();
+        downloadFile(resultado2.docGuardado,resultado2.idDoc);
+    } catch (error) {
+        //Capturar y manejar cualquier error ocurrido durante la solicitud o el procesamiento
+        console.error('Error es:', error);
+    }
 }
 
-
-
-function downloadFile() {
-    const fileUrl = 'C:\\Users\\VICTUS\\upload\\FF-22-2023 - 5\\291433a7-4895-4bd7-ac9d-379bd809d18a.pdf';
-    const fileName = '291433a7-4895-4bd7-ac9d-379bd809d18a.pdf';
+function downloadFile(fileUrl,fileName) {
 
     fetch(fileUrl)
         .then(response => response.blob())
@@ -38,7 +37,7 @@ function downloadFile() {
             // Crea un elemento <a> para descargar el archivo
             const link = document.createElement('a');
             link.href = url;
-            link.download = fileName;
+            link.download = fileName + ".pdf";
 
             // Simula el clic en el enlace para iniciar la descarga
             link.click();
@@ -50,10 +49,6 @@ function downloadFile() {
             console.error('Error al descargar el archivo:', error);
         });
 }
-
-
-
-
 
 async function listaPropietario() {
     let datosPro = {};

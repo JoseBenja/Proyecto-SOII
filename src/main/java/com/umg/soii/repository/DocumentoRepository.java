@@ -22,14 +22,14 @@ public class DocumentoRepository implements DocumentoDao {
     }
 
     @Override
-    public String descargarDocumento(Documento documento) {
-        String query = "FROM Documento WHERE propietario= :prop";
+    public List<Documento> descargarDocumento(Documento documento) {
+        String query = "FROM Documento WHERE idDoc = :doc";
+
         List<Documento> lista = entityManager.createQuery(query)
-                .setParameter("prop", documento.getPropietario())
+                .setParameter("doc", documento.getIdDoc())
                 .getResultList();
 
-
-        return lista.get(0).getDocGuardado();
+        return lista;
     }
 
 }
