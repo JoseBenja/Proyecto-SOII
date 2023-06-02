@@ -44,8 +44,8 @@ function descargarDocumento() {
             const docGuardado = match && match[1] ? match[1] : null;
 
             if (docGuardado) {
-                const baseUrl = ' '; // Actualiza la base URL según tu configuración
-                const fileUrl = baseUrl + docGuardado;
+                const fileUrl = docGuardado.replace('/home/app-benja/file-system-soii', 'http://192.168.0.16');
+                alert(fileUrl);
                 window.open(fileUrl, '_blank');
             } else {
                 alert('No se encontró el archivo para descargar.');
