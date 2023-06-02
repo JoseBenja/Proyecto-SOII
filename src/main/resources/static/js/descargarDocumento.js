@@ -1,78 +1,93 @@
-$(document).ready(function() {
-    listaPropietario();
-});
-
-async function descargarDocumento() {
+/*function descargarDocumento() {
     let datosDescarga = {};
 
     datosDescarga.idDoc = document.getElementById("txtIdDocDesc").value;
-    datosDescarga.propietario = document.getElementById("SelectTableDescarga").value;
     datosDescarga.fechaDoc = document.getElementById("txtFechaDesde").value;
+    datosDescarga.docGuardado = "";
 
-    try {
-        const request3 = await fetch('api/descargarDocumento', {
+    const request = fetch('api/descargarDocumento', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datosDescarga),
+    });
+    const resultado = request.json();
+    alert(resultado.idDoc);
+}*/
+
+function descargarDocumento() {
+    let datosDescarga = {};
+
+    datosDescarga.idDoc = $("#txtIdDocDesc").val();
+    datosDescarga.fechaDoc = $("#txtFechaDesde").val();
+    datosDescarga.docGuardado = "";
+
+    fetch('api/descargarDocumento', {
+        method: 'POST',
+        headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(datosDescarga)
-    });
-        const resultado2 = await request3.json();
-        downloadFile(resultado2.docGuardado,resultado2.idDoc);
-    } catch (error) {
-        //Capturar y manejar cualquier error ocurrido durante la solicitud o el procesamiento
-        console.error('Error es:', error);
-    }
-}
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error('Error en la solicitud: ' + response.status);
+            }
+        })
+        .then(resultado => {
+            const regex = /"docGuardado":"(.*?)"/;
+            const match = regex.exec(resultado);
+            const docGuardado = match && match[1] ? match[1] : null;
 
-function downloadFile(fileUrl,fileName) {
-
-    fetch(fileUrl)
-        .then(response => response.blob())
-        .then(blob => {
-            // Crea un enlace temporal
-            const url = window.URL.createObjectURL(blob);
-
-            // Crea un elemento <a> para descargar el archivo
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = fileName + ".pdf";
-
-            // Simula el clic en el enlace para iniciar la descarga
-            link.click();
-
-            // Libera el objeto URL
-            window.URL.revokeObjectURL(url);
+            if (docGuardado) {
+                const baseUrl = ' '; // Actualiza la base URL según tu configuración
+                const fileUrl = baseUrl + docGuardado;
+                window.open(fileUrl, '_blank');
+            } else {
+                alert('No se encontró el archivo para descargar.');
+            }
         })
         .catch(error => {
-            console.error('Error al descargar el archivo:', error);
+            console.error('Error en la solicitud:', error);
         });
 }
 
-async function listaPropietario() {
-    let datosPro = {};
 
-    datosPro.estado = true;
+/*function descargarDocumento() {
+    let datosDescarga = {};
 
-    const request2 = await fetch('api/verPropietario', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+    datosDescarga.idDoc = $("#txtIdDocDesc").val();
+    datosDescarga.fechaDoc = $("#txtFechaDesde").val();
+    datosDescarga.docGuardado = "";
+
+    $.ajax({
+        url: 'api/descargarDocumento',
+        type: 'POST',
+        dataType: 'text', // Cambio de 'json' a 'text' para recibir una respuesta de texto
+        contentType: 'application/json',
+        data: JSON.stringify(datosDescarga),
+        success: function(resultado) {
+        alert(resultado)
         },
-        body: JSON.stringify(datosPro)
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
     });
-    const resultadoBusqueda = await request2.json()
 
-    let resultadoBusquedaHtml = '';
 
-    for (let resultado of resultadoBusqueda) {
-        let resultadoHtml = `<option value="` + resultado.idPropietario + `">` + resultado.nomPropietario + `</option>`;
+}*/
 
-        resultadoBusquedaHtml += resultadoHtml;
-    }
-    resultadoBusquedaHtml = `<option selected>Seleccionar...</option>` + resultadoBusquedaHtml;
-    document.querySelector("#SelectTableDescarga").innerHTML = resultadoBusquedaHtml;
+function downloadFile(fileUrl) {
+    alert(fileUrl);
+    // Crea un elemento <a> temporal
+    var link = document.createElement('a');
+    link.href = fileUrl;
+    link.download = fileUrl.split('/').pop(); // Obtiene el nombre del archivo de la URL
+
+    // Simula el clic en el enlace para iniciar la descarga
+    link.dispatchEvent(new MouseEvent('click'));
 }
-

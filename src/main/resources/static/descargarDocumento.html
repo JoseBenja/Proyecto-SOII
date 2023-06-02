@@ -25,9 +25,8 @@
             <form>
                 <div class="form-group row">
                     <div class="col-sm-12 mb-3 mb-sm-0">
-                        <label for="SelectTableDescarga" class="form-label">Propietario del Documento</label>
-                        <select id="SelectTableDescarga" class="form-select form-control">
-                        </select>
+                        <label for="txtPropietario" class="form-label">Propietario del Documento</label>
+                        <input maxlength="50" type="text" class="form-control" id="txtPropietario">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -53,7 +52,7 @@
                         <a class="btn btn-primary btn-user btn-block" href="menuPrincipal.html">Cancelar</a>
                     </div>
                     <div class="col-sm-6">
-                        <button class="btn btn-primary btn-user btn-block" onclick="descargarDocumento()">Descargar</button>
+                        <a class="btn btn-primary btn-user btn-block" href="#" onclick="descargarDocumento()">Descargar</a>
                     </div>
                 </div>
             </form>

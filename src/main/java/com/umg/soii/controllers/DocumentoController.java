@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.hibernate.engine.jdbc.env.internal.LobCreatorBuilderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +24,16 @@ import java.nio.file.Paths;
 import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @RestController
 public class DocumentoController {
 
     @Autowired
     private DocumentoDao documentoDao;
+
+    private static final Logger logger = Logger.getLogger(UsuarioController.class.getName());
 
     @PostMapping("/cargarDocumento")
     public void guardarDocumento(@RequestParam("idFile") MultipartFile file,
@@ -38,15 +43,10 @@ public class DocumentoController {
 
         Documento doc = new Documento();
 
-        String nombreArchivoNuevo = UUID.randomUUID().toString();
-
         byte[] bytes = file.getBytes();
 
         String nombreArchivoOriginal = file.getOriginalFilename();
 
-        String archivoExtension = nombreArchivoOriginal.substring(nombreArchivoOriginal.lastIndexOf("."));
-
-        String nuevoNomArchivo = nombreArchivoNuevo + archivoExtension;
 
         StringBuilder builder = new StringBuilder();
         builder.append(System.getProperty("user.home"));
@@ -56,18 +56,21 @@ public class DocumentoController {
 
         File folder = new File(builder.toString());
         if (!folder.exists()) {
+            logger.log(Level.INFO,"File System creado con exito");
             folder.mkdirs();
         }
         builder.append(File.separator);
-        builder.append(idenDoc + "-" + propietario);
+        builder.append(idenDoc + "-" + propietario + "-" + fecha);
 
         File folder2 = new File(builder.toString());
         if (!folder2.exists()) {
+
             folder2.mkdirs();
         }
 
-        Path path = Paths.get(builder.append(File.separator) + nuevoNomArchivo);
+        Path path = Paths.get(builder.append(File.separator) + nombreArchivoOriginal);
         Files.write(path, bytes);
+
 
         doc.setIdDoc(idenDoc);
         doc.setPropietario(propietario);
@@ -75,13 +78,12 @@ public class DocumentoController {
         doc.setDocGuardado(path.toString());
 
         documentoDao.guardarDocumento(doc);
+        logger.log(Level.INFO,"Documento guardado con exito");
     }
 
     @RequestMapping(value = "api/descargarDocumento", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<List<Documento>> descargarDocumento(@RequestBody Documento documento) {
-        List<Documento> documentos = documentoDao.descargarDocumento(documento);
-        return ResponseEntity.ok(documentos);
+    public List<Documento> descargarDocumento(@RequestBody Documento documento) {
+        logger.log(Level.INFO,"La ruta del archivo es = " + documento.getDocGuardado());
+        return documentoDao.descargarDocumento(documento);
     }
-
 }
