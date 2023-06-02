@@ -31,7 +31,7 @@ public class UsuarioController {
             logger.log(Level.INFO, "Usuario encontrado en la Base de datos");
             return jwtUtil.create(String.valueOf(usuarioLogged.getIdUser()), usuarioLogged.getNomUser());
         }
-        logger.log(Level.INFO, "El Usuario no fue encontrado");
+        logger.log(Level.WARNING, "El Usuario no fue encontrado");
         return "Fail";
     }
 }

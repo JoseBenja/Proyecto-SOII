@@ -35,7 +35,7 @@ public class DocumentoController {
 
     private static final Logger logger = Logger.getLogger(UsuarioController.class.getName());
 
-    @PostMapping("/cargarDocumento")
+    @PostMapping("soii-0.0.1-SNAPSHOT/cargarDocumento")
     public void guardarDocumento(@RequestParam("idFile") MultipartFile file,
                                  @RequestParam("txtIdDoc") String idenDoc,
                                  @RequestParam("txtFecha") Date fecha,
@@ -50,14 +50,12 @@ public class DocumentoController {
 
 
         StringBuilder builder = new StringBuilder();
-        builder.append(System.getProperty("user.home"));
-        builder.append(File.separator);
         builder.append("file-system-soii");
 
 
         File folder = new File(builder.toString());
         if (!folder.exists()) {
-            logger.log(Level.INFO,"File System creado con exito");
+            logger.log(Level.INFO,"File System creado con exito: " + builder);
             folder.mkdirs();
         }
         builder.append(File.separator);
@@ -79,9 +77,9 @@ public class DocumentoController {
         doc.setDocGuardado(path.toString());
 
         documentoDao.guardarDocumento(doc);
-        logger.log(Level.INFO,"Documento guardado con exito");
+        logger.log(Level.FINE,"Documento guardado con exito");
 
-        response.sendRedirect("/menuPrincipal.html");
+        response.sendRedirect("http://localhost:8080/soii-0.0.1-SNAPSHOT/menuPrincipal.html");
     }
 
     @RequestMapping(value = "api/descargarDocumento", method = RequestMethod.POST)
