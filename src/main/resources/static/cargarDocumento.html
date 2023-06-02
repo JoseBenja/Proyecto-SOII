@@ -26,33 +26,33 @@
                     <div class="form-group row">
                         <div class="col-sm-12 mb-3 mb-sm-0">
                             <label for="txtIdDoc" class="form-label">Identificador del Documento</label>
-                            <input maxlength="50" type="text" class="form-control" id="txtIdDoc" name="txtIdDoc">
+                            <input maxlength="50" type="text" class="form-control" id="txtIdDoc" name="txtIdDoc" required title="Informacion incompleta">
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-12 mb-3 mb-sm-0">
                             <label for="SelectTable" class="form-label">Propietario del Documento</label>
-                            <select id="SelectTable" class="form-select form-control" name="SelectTable">
+                            <select id="SelectTable" class="form-select form-control" name="SelectTable" required title="Informacion incompleta">
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-12 mb-3 mb-sm-0">
                             <label class="form-label">Fecha del Documento</label>
-                            <input type="date" class="form-control" id="txtFecha" name="txtFecha">
+                            <input type="date" class="form-control" id="txtFecha" name="txtFecha" required title="Informacion incompleta">
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-12 mb-3 mb-sm-0">
                             <label class="form-label">Documento Adjunto</label>
-                            <input type="file" class="form-control" id="idFile" accept=".pdf" name="idFile">
+                            <input type="file" class="form-control" id="idFile" accept=".pdf" name="idFile" required title="Informacion incompleta">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-5">
                             <a class="btn btn-primary btn-user btn-block" href="menuPrincipal.html">Cancelar</a>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-7">
                             <button  id="cargarDocumentoBtn" class="btn btn-primary btn-user btn-block" value="Upload" type="submit">Cargar Documento</button>
                         </div>
                     </div>

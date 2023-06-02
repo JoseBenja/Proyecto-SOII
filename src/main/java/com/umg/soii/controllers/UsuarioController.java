@@ -28,7 +28,7 @@ public class UsuarioController {
 
         Usuario usuarioLogged = usuarioDao.obtenerUsuarioPorCredencial(usuario);
         if (usuarioLogged != null) {
-            logger.log(Level.INFO, "Usuario encontrada en la Base de datos");
+            logger.log(Level.INFO, "Usuario encontrado en la Base de datos");
             return jwtUtil.create(String.valueOf(usuarioLogged.getIdUser()), usuarioLogged.getNomUser());
         }
         logger.log(Level.INFO, "El Usuario no fue encontrado");

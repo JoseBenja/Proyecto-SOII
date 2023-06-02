@@ -39,7 +39,8 @@ public class DocumentoController {
     public void guardarDocumento(@RequestParam("idFile") MultipartFile file,
                                  @RequestParam("txtIdDoc") String idenDoc,
                                  @RequestParam("txtFecha") Date fecha,
-                                 @RequestParam("SelectTable") int propietario) throws Exception {
+                                 @RequestParam("SelectTable") int propietario,
+                                 HttpServletResponse response) throws Exception {
 
         Documento doc = new Documento();
 
@@ -79,11 +80,12 @@ public class DocumentoController {
 
         documentoDao.guardarDocumento(doc);
         logger.log(Level.INFO,"Documento guardado con exito");
+
+        response.sendRedirect("/menuPrincipal.html");
     }
 
     @RequestMapping(value = "api/descargarDocumento", method = RequestMethod.POST)
     public List<Documento> descargarDocumento(@RequestBody Documento documento) {
-        logger.log(Level.INFO,"La ruta del archivo es = " + documento.getDocGuardado());
         return documentoDao.descargarDocumento(documento);
     }
 }

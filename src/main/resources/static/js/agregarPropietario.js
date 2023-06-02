@@ -1,14 +1,18 @@
-// Call the dataTables jQuery plugin
-$(document).ready(function() {
-});
 
 async function agregarPropietario() {
-
     let datos = {};
     let estado = true;
 
-    datos.nomPropietario = document.getElementById('txtNomProp').value;
-    datos.fechaNac = document.getElementById('dateFechaNac').value;
+    const nomPropietario = document.getElementById('txtNomProp').value;
+    const fechaNac = document.getElementById('dateFechaNac').value;
+
+    if (!nomPropietario || !fechaNac) {
+        alert('Informacion incompleta');
+        return;
+    }
+
+    datos.nomPropietario = nomPropietario;
+    datos.fechaNac = fechaNac;
     datos.estado = estado;
 
     await fetch('api/agregarPropietario', {
@@ -19,4 +23,5 @@ async function agregarPropietario() {
         },
         body: JSON.stringify(datos)
     });
+
 }
