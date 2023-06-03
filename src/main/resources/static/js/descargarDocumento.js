@@ -33,7 +33,7 @@ function descargarDocumento() {
 
                 if (docGuardado) {
                     alert(docGuardado);
-                    const fileUrl = docGuardado.replace('/file-system-soii', 'http://192.168.0.16');
+                    const fileUrl = docGuardado.replace('/home/app-benja/file-system-soii', 'http://192.168.0.16');
                     window.open(fileUrl, '_blank');
                 } else {
                     alert('No se encontró el archivo para descargar.');
